@@ -1,6 +1,12 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
 const port = 3000;
+
+app.use(cors());
+app.use(bodyParser.json());
 
 // data for the API
 const artists = [
@@ -8,6 +14,11 @@ const artists = [
   { id: 2, name: 'Pablo Picasso', bio: 'Spanish painter, sculptor, and printmaker' },
   { id: 3, name: 'Leonardo da Vinci', bio: 'Italian Renaissance polymath' }
 ];
+
+const usersRoute = require('./routes/users');
+const artistsRoute = require('./routes/artists');
+const albumsRoute = require('./routes/albums');
+const songsRoute = require('./routes/songs');
 
 const artworks = [
   { id: 1, artistId: 1, title: 'The Starry Night', year: 1889 },
