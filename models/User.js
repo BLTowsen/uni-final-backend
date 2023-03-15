@@ -6,14 +6,15 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    age: {
-        type: Number,
-        required: false
+    email: {
+        type: String,
+        required: true,
+        unique: true
     },
-    address: {
-        type: Object,
-        required: false
-    }
+    password: {
+        type: String,
+        required: true
+    },
 });
 
 module.exports = mongoose.model('User', UserSchema);
