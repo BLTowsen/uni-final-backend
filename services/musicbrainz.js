@@ -236,7 +236,7 @@ module.exports = {
                 reject(error);
                 }
             });
-        }
+        });
     },
     getWorkReleases : async (mbid) => {
         const url = `${MUSICBRAINZ_API_URL}/work/${mbid}/?inc=releases&fmt=json`;
@@ -262,7 +262,7 @@ module.exports = {
                 reject(error);
                 }
             });
-        }
+        });
     },
     getWorkRecordings : async (mbid) => {
         const url = `${MUSICBRAINZ_API_URL}/work/${mbid}/?inc=recordings&fmt=json`;
@@ -288,7 +288,7 @@ module.exports = {
                 reject(error);
                 }
             });
-        }
+        });
     },
     getWorkArtists : async (mbid) => {
         const url = `${MUSICBRAINZ_API_URL}/work/${mbid}/?inc=artists&fmt=json`;
@@ -366,7 +366,7 @@ module.exports = {
                 reject(error);
                 }
             });
-        }
+        });
     },
     getWorkRatings : async (mbid) => {
         const url = `${MUSICBRAINZ_API_URL}/work/${mbid}/?inc=ratings&fmt=json`;
@@ -784,5 +784,5 @@ module.exports = {
             });
         });
     },
-    
+
 }
