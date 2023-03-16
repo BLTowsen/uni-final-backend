@@ -1,82 +1,113 @@
 // export a function that returns the access token for the Spotify API using the credentials in the .env file
 require('dotenv/config');
 const request = require('request');
+const accessTokens = require('./accessTokens');
 
 module.exports = {
-    getAccessToken: async () => {
-        var authOptions = {
-            url: 'https://accounts.spotify.com/api/token',
-            headers: {
-              'Authorization': 'Basic ' + (new Buffer(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_SECRET_ID).toString('base64'))
-            },
-            form: {
-              grant_type: 'client_credentials'
-            },
-            json: true
-          };
-        
-        request.post(authOptions, function(error, response, body) {
-            if (!error && response.statusCode === 200) {
-            // use the access token to access the Spotify Web API
-            var token = body.access_token;
-            return token;
-            }
+    getTracks : async (artistId) => {
+        return new Promise(async (resolve, reject) => {
+            const token = await accessTokens.getSpotifyAccessToken();
+            const options = {
+                url: 'https://api.spotify.com/v1/search?q=artist:' + artistId + '&type=track',
+                headers: { 'Authorization': 'Bearer ' + token },
+                json: true
+            };
+            request.get(options, function(error, response, body) {
+                if (!error && response.statusCode === 200) {
+                    resolve(body);
+                } else {
+                    reject(error);
+                }
+            });
+        });
+    },
+    getTrack : async (trackId) => {
+        return new Promise(async (resolve, reject) => {
+            const token = await accessTokens.getSpotifyAccessToken();
+            const options = {
+                url: 'https://api.spotify.com/v1/tracks/' + trackId,
+                headers: { 'Authorization': 'Bearer ' + token },
+                json: true
+            };
+            request.get(options, function(error, response, body) {
+                if (!error && response.statusCode === 200) {
+                    resolve(body);
+                } else {
+                    reject(error);
+                }
+            });
         });
     },
 
-    getTracks : async (req, res) => {
-        const token = await this.getAccessToken();
-        const options = {
-            url: 'https://api.spotify.com/v1/search?q=artist:' + req.params.artist + '&type=track',
-            headers: { 'Authorization': 'Bearer ' + token },
-            json: true
-        };
-        request.get(options, function(error, response, body) {
-            if (!error && response.statusCode === 200) {
-                res.json(body);
-            }
+    getAlbums : async (artistId) => {
+        return new Promise(async (resolve, reject) => {
+            const token = await accessTokens.getSpotifyAccessToken();
+            const options = {
+                url: 'https://api.spotify.com/v1/search?q=artist:' + artistId + '&type=album',
+                headers: { 'Authorization': 'Bearer ' + token },
+                json: true
+            };
+            request.get(options, function(error, response, body) {
+                if (!error && response.statusCode === 200) {
+                    resolve(body);
+                } else {
+                    reject(error);
+                }
+            });
         });
     },
 
-    getTrack : async (req, res) => {
-        const token = await this.getAccessToken();
-        const options = {
-            url: 'https://api.spotify.com/v1/tracks/' + req.params.track,
-            headers: { 'Authorization': 'Bearer ' + token },
-            json: true
-        };
-        request.get(options, function(error, response, body) {
-            if (!error && response.statusCode === 200) {
-                res.json(body);
-            }
+    getArtist : async (artistId) => {
+        return new Promise(async (resolve, reject) => {
+            const token = await accessTokens.getSpotifyAccessToken();
+            const options = {
+                url: 'https://api.spotify.com/v1/artists/' + artistId,
+                headers: { 'Authorization': 'Bearer ' + token },
+                json: true
+            };
+            request.get(options, function(error, response, body) {
+                if (!error && response.statusCode === 200) {
+                    resolve(body);
+                } else {
+                    reject(error);
+                }
+            });
         });
     },
-
-    getAlbums : async (req, res) => {
-        const token = await this.getAccessToken();
-        const options = {
-            url: 'https://api.spotify.com/v1/search?q=artist:' + req.params.artist + '&type=album',
-            headers: { 'Authorization': 'Bearer ' + token },
-            json: true
-        };
-        request.get(options, function(error, response, body) {
-            if (!error && response.statusCode === 200) {
-                res.json(body);
-            }
+    search : async (query) => {
+        return new Promise(async (resolve, reject) => {
+            const excapedQuery = query.replace(/ /g, '+');
+            const token = await accessTokens.getSpotifyAccessToken();
+            const options = {
+                url: 'https://api.spotify.com/v1/search?q=' + excapedQuery + '&type=artist,album,track',
+                headers: { 'Authorization': 'Bearer ' + token },
+                json: true
+            };
+            request.get(options, function(error, response, body) {
+                if (!error && response.statusCode === 200) {
+                    resolve(body);
+                } else {
+                    reject(error);
+                }
+            });
         });
     },
-
-    getArtist : async (req, res) => {
-        const token = await this.getAccessToken();
-        const options = {
-            url: 'https://api.spotify.com/v1/artists/' + req.params.artist,
-            headers: { 'Authorization': 'Bearer ' + token },
-            json: true
-        };
-        request.get(options, function(error, response, body) {
-            if (!error && response.statusCode === 200) {
-                res.json(body);
-            }
+    searchArtist : async (query) => {
+        return new Promise(async (resolve, reject) => {
+            const excapedQuery = query.replace(/ /g, '+');
+            const token = await accessTokens.getSpotifyAccessToken();
+            const options = {
+                url: 'https://api.spotify.com/v1/search?q=' + excapedQuery + '&type=artist',
+                headers: { 'Authorization': 'Bearer ' + token },
+                json: true
+            };
+            request.get(options, function(error, response, body) {
+                if (!error && response.statusCode === 200) {
+                    resolve(body);
+                } else {
+                    reject(error);
+                }
+            });
         });
-    },
+    }
 }
