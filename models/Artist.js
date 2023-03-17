@@ -5,13 +5,21 @@ const ArtistSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    popularity: {
+        type: Number,
+        required: false
+    },
+    mbid: {
+        type: String,
+        required: false
+    },
     country: {
         type: String,
-        required: true
+        required: false
     },
-    genre: {
-        type: String,
-        required: true
+    genres: {
+        type: Array,
+        required: false
     },
     albums: [{
         type: mongoose.Schema.Types.ObjectId,
