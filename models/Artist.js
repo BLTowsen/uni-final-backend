@@ -29,6 +29,10 @@ const ArtistSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Song'
     }],
+    aliases: {
+        type: Array,
+        required: false
+    }
 });
 
 module.exports = mongoose.model('Artist', ArtistSchema);
